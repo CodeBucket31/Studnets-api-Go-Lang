@@ -1,0 +1,10 @@
+env: "dev"
+
+storege_path:  "storege/storege.db"
+
+http_server:
+
+address: "localhost:8082"
+
+
+
