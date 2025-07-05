@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/sonu31/student-api/internal/types"
 	"github.com/sonu31/student-api/internal/utils/response"
 )
@@ -27,8 +28,17 @@ func Create() http.HandlerFunc {
 			return
 		}
 
+		//required Valideation
+		if err := validator.New().Struct(student); err != nil {
+
+			validaterErrs := err.(validator.ValidationErrors)
+			response.WriteJosn(w, http.StatusBadRequest, response.ValidationError(validaterErrs))
+			return
+		}
+
 		slog.Info("careteing a studnet")
 		response.WriteJosn(w, http.StatusCreated, map[string]string{"sucess": "Ok"})
 
 	}
+
 }
