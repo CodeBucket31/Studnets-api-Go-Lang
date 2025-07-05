@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/sonu31/student-api/internal/config"
+	student "github.com/sonu31/student-api/internal/http/handlers"
 )
 
 func main() {
@@ -20,10 +21,7 @@ func main() {
 	cfg := config.MustLoad()
 
 	router := http.NewServeMux()
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello to stu api sk"))
-	})
-
+	router.HandleFunc("POST /api/students", student.Create())
 	// database setup
 	//setup router
 
