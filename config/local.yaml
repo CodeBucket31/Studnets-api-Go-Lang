@@ -1,6 +1,6 @@
 env: "dev"
 
-storage_path:  "storage/storage.db"
+storage_path:  "storage/storage3.db"
 
 http_server:
 

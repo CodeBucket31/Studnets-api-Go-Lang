@@ -13,6 +13,7 @@ import (
 
 	"github.com/sonu31/student-api/internal/config"
 	student "github.com/sonu31/student-api/internal/http/handlers"
+	"github.com/sonu31/student-api/internal/storage/sqlite"
 )
 
 func main() {
@@ -23,6 +24,14 @@ func main() {
 	router := http.NewServeMux()
 	router.HandleFunc("POST /api/students", student.Create())
 	// database setup
+	_, sqlerr := sqlite.New(cfg)
+	if sqlerr != nil {
+		log.Fatal(sqlerr)
+
+	}
+
+	slog.Info("Storage Initlialized ", slog.String("env", cfg.Env), slog.String("Verion", "1.0.0"))
+
 	//setup router
 
 	//setuo server
