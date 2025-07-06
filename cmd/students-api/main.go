@@ -20,17 +20,17 @@ func main() {
 	fmt.Println("HI Go")
 	//load confg
 	cfg := config.MustLoad()
-
-	router := http.NewServeMux()
-	router.HandleFunc("POST /api/students", student.Create())
-	// database setup
-	_, sqlerr := sqlite.New(cfg)
+	storage, sqlerr := sqlite.New(cfg)
 	if sqlerr != nil {
 		log.Fatal(sqlerr)
 
 	}
-
 	slog.Info("Storage Initlialized ", slog.String("env", cfg.Env), slog.String("Verion", "1.0.0"))
+
+	router := http.NewServeMux()
+	router.HandleFunc("POST /api/students", student.Create(storage))
+	router.HandleFunc("GET /api/students/{id}", student.GetById(storage))
+	// database setup
 
 	//setup router
 

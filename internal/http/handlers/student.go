@@ -3,16 +3,19 @@ package student
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
+	"strconv"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/sonu31/student-api/internal/storage"
 	"github.com/sonu31/student-api/internal/types"
 	"github.com/sonu31/student-api/internal/utils/response"
 )
 
-func Create() http.HandlerFunc {
+func Create(storage storage.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		var student types.Student
@@ -37,7 +40,44 @@ func Create() http.HandlerFunc {
 		}
 
 		slog.Info("careteing a studnet")
-		response.WriteJosn(w, http.StatusCreated, map[string]string{"sucess": "Ok"})
+
+		lastid, errr := storage.CreateStudent(student.Name, student.Email, student.Age)
+
+		slog.Info("user Cerated successfully", slog.String("userId", fmt.Sprint(lastid)))
+
+		if errr != nil {
+			response.WriteJosn(w, http.StatusInternalServerError, err)
+			return
+
+		}
+
+		response.WriteJosn(w, http.StatusCreated, map[string]int64{"id": lastid})
+
+	}
+
+}
+
+func GetById(storage storage.Storage) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := r.PathValue("id")
+
+		slog.Info("getting a student", slog.String("id", id))
+
+		intId, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			response.WriteJosn(w, http.StatusBadRequest, response.GeneralError(err))
+			return
+		}
+
+		student, e := storage.GetStudentById(intId)
+
+		if e != nil {
+			slog.Error("erro getting user", slog.String("id", id))
+			response.WriteJosn(w, http.StatusInternalServerError, response.GeneralError(e))
+			return
+		}
+
+		response.WriteJosn(w, http.StatusOK, student)
 
 	}
 
