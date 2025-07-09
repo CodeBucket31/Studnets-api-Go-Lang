@@ -97,3 +97,68 @@ func GetList(storage storage.Storage) http.HandlerFunc {
 	}
 
 }
+
+func UpdateItme(storage storage.Storage) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		slog.Info("UpdateItme Index ")
+
+		// type StudentTest struct {
+		// 	ID    int
+		// 	Name  string
+		// 	Email string
+		// }
+		// var s1list []StudentTest
+
+		// var _ []StudentTest
+
+		// if students1 == nil {
+		// 	response.WriteJosn(w, http.StatusBadGateway, "NUlll Ata")
+		// }
+
+		// s1list := StudentTest{ID: 2, Name: "RAj ", Email: "sonu@gmial.con"}
+
+		// for i := 0; i < 40; i++ {
+		// 	students1 = append(students1, s1list)
+		// }
+
+		// numbers := []int{1, 2, 3, 4, 5}
+
+		//    sk int[]int{2,3,4,5,6}
+
+		// 1. Get ID from URL
+		// idStr := URLParam(r, "id") // Assuming chi router used
+		// id, err := strconv.ParseInt(idStr, 10, 64)
+		// if err != nil {
+		// 	http.Error(w, "Invalid student ID", http.StatusBadRequest)
+		// 	return
+		// }
+
+		// 2. Decode request body
+		// var student types.Student
+		// err = json.NewDecoder(r.Body).Decode(&student)
+		// if err != nil {
+		// 	http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		// 	return
+		// }
+
+		// 3. Validation
+		// if strings.TrimSpace(student.Name) == "" || strings.TrimSpace(student.Email) == "" {
+		// 	http.Error(w, "Name and Email are required", http.StatusBadRequest)
+		// 	return
+		// }
+
+		// 4. Call DB update
+		// err = storage.UpdateStudentByID(id, student)
+		// if err != nil {
+		// 	http.Error(w, "Failed to update student", http.StatusInternalServerError)
+		// 	return
+		// }
+
+		// json.NewEncoder(w).Encode(map[string]string{
+		// 	"message": "Student updated successfully",
+		// })
+
+		// response.WriteJosn(w, http.StatusOK, sk)
+
+	}
+}
